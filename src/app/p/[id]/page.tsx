@@ -9,7 +9,7 @@ export interface ArchiveImage {
   id: number;
   cdn_url: string;
   short_name: string;
-  description: string;
+  Description: string;
 }
 
 export interface ArchiveImageResponse {

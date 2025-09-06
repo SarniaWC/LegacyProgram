@@ -5,7 +5,7 @@ interface ArchiveImage {
   id: number;
   cdn_url: string;
   short_name: string;
-  description: string;
+  Description: string;
 }
 async function getImages(id: string): Promise<ArchiveImage> {
   const response = await api.get(`upload/archive/image/${id}/detail/`);
@@ -26,14 +26,24 @@ export default async function DetailPage({
   }
 
   return (
-    <div className="mt-4 flex flex-col items-center justify-center text-white">
-      <h1 className="text-4xl font-bold mb-4">
-        {!data.short_name ? "No title" : data.short_name}
-      </h1>
-      <img src={data.cdn_url} alt={data.short_name} className="max-w-64" />
-      <p className="text-lg mb-8 text-white">
-        {!data.description ? "No Description" : data.description}
-      </p>
+    <div className="container mx-auto px-2 py-2">
+      <div className="bg-neutral-900 rounded-lg shadow-lg overflow-hidden border border-neutral-700 max-w-3xl mx-auto">
+        <div className="p-6">
+          <h1 className="text-xl font-bold mb-4 text-white">
+            {!data.short_name ? "No title" : data.short_name}
+          </h1>
+          <p className="text-sm mb-6 text-gray-300">
+            {!data.Description ? "No Description" : data.Description}
+          </p>
+          <div className="flex justify-center">
+            <img
+              src={data.cdn_url}
+              alt={data.short_name}
+              className="max-w-[90%] h-auto rounded-md shadow-md max-h-100"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
