@@ -82,7 +82,6 @@ export default function Picture() {
   function exit() {
     const entryPath = sessionStorage.getItem("entryPath");
     sessionStorage.removeItem("entryPath");
-    sessionStorage.removeItem("selectedFolder");
     sessionStorage.removeItem("picture");
     navigate.push(entryPath || "/");
   }
