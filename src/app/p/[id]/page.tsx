@@ -1,4 +1,3 @@
-import { api } from "@/api";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { ClientPicPage } from "@/app/p/[id]/ClientPicPage";
@@ -11,14 +10,20 @@ interface ArchiveImage {
 }
 
 async function getImages(id: string): Promise<ArchiveImage> {
-  const response = await api.get(`upload/archive/image/${id}/detail/`);
-  if (!response.data) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/upload/archive/image/${id}/detail/`,
+  );
+  if (!response.ok) {
+    throw new Error("Failed to fetch image data");
+  }
+  const data = await response.json();
+  if (!data) {
     throw new Error("Invalid image data");
   }
-  if (!response.data.cdn_url || !response.data.id) {
+  if (!data.cdn_url || !data.id) {
     throw new Error("Invalid image data: missing required fields");
   }
-  return response.data;
+  return data;
 }
 
 export async function generateMetadata({
@@ -64,19 +69,8 @@ export async function generateMetadata({
 }
 
 /**
- *  Critical: We must fetch image data here in the server component — even though it's already fetched in `generateMetadata()`.
- *
- * Why? Because Next.js injects metadata into the <head> of the initial HTML only if it's resolved synchronously
- * during server render. If we skip this fetch and rely solely on the client component to load data,
- * metadata injection breaks — it gets deferred to <script> tags, which SEO bots and social crawlers ignore.
- *
- * Additionally, this fetch ensures:
- * - Early validation of the `id` param
- * - Proper error handling via `notFound()`
- * - Synchronization between metadata and page content
- *
- * Yes, this results in a duplicate API call — but it's necessary to ensure correct metadata injection,
- * crawler compatibility, and consistent server-rendered output.
+ * Critical, we must invoke getImages twice despite only using it for metadata
+ * Otherwise, the metadata will not be generated
  */
 
 export default async function DetailTestPage({

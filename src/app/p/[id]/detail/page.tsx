@@ -1,4 +1,3 @@
-import { api } from "@/api";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 
@@ -10,14 +9,20 @@ interface ArchiveImage {
 }
 
 async function getImages(id: string): Promise<ArchiveImage> {
-  const response = await api.get(`upload/archive/image/${id}/detail/`);
-  if (!response.data) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/upload/archive/image/${id}/detail/`,
+  );
+  if (!response.ok) {
+    throw new Error("Failed to fetch image data");
+  }
+  const data = await response.json();
+  if (!data) {
     throw new Error("Invalid image data");
   }
-  if (!response.data.cdn_url || !response.data.id) {
+  if (!data.cdn_url || !data.id) {
     throw new Error("Invalid image data: missing required fields");
   }
-  return response.data;
+  return data;
 }
 
 export async function generateMetadata({
