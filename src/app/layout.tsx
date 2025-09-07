@@ -1,23 +1,5 @@
 import { ReactQueryProvider } from "./providers/react-query-provider";
 import "./globals.css";
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Legacy | Sarnia Wrestling Club",
-  description: "Archive of Sarnia Wrestling Club",
-  openGraph: {
-    title: "Legacy | Sarnia Wrestling Club",
-    description: "Legacy Program of Sarnia Wrestling Club",
-    type: "website",
-    images: ["/og-image.jpg"],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Legacy | Sarnia Wrestling Club",
-    description: "Legacy of Sarnia Wrestling Club",
-    images: ["/og-image.jpg"],
-  },
-};
 
 export default function RootLayout({
   children,

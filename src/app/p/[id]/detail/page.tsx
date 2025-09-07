@@ -11,12 +11,12 @@ interface ArchiveImage {
 
 async function getImages(id: string): Promise<ArchiveImage> {
   const response = await api.get(`upload/archive/image/${id}/detail/`);
-    if (!response.data) {
-      throw new Error("Invalid image data");
-    }
-    if (!response.data.cdn_url || !response.data.id) {
-      throw new Error("Invalid image data: missing required fields");
-    }
+  if (!response.data) {
+    throw new Error("Invalid image data");
+  }
+  if (!response.data.cdn_url || !response.data.id) {
+    throw new Error("Invalid image data: missing required fields");
+  }
   return response.data;
 }
 
@@ -26,7 +26,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   try {
-    const { id } = await params;
+    const id = (await params).id;
     const data = await getImages(id);
 
     // Encode the CDN URL to handle spaces and special characters
@@ -69,10 +69,13 @@ export default async function DetailPage({
 }) {
   let data;
   try {
-    const { id } = await params;
+    const id = (await params).id;
     data = await getImages(id);
   } catch (error) {
-    console.error("Error fetching image details:", error instanceof Error ? error.message : error);
+    console.error(
+      "Error fetching image details:",
+      error instanceof Error ? error.message : error,
+    );
     notFound();
   }
   return (
