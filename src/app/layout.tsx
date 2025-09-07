@@ -5,12 +5,10 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Legacy | Sarnia Wrestling Club",
   description: "Archive of Sarnia Wrestling Club",
-  metadataBase: new URL("https://legacy.sarniawrestling.ca"),
   openGraph: {
     title: "Legacy | Sarnia Wrestling Club",
     description: "Legacy Program of Sarnia Wrestling Club",
     type: "website",
-    url: "https://legacy.sarniawrestling.ca",
     images: ["/og-image.jpg"],
   },
   twitter: {
