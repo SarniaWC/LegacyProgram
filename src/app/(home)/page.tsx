@@ -6,8 +6,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     metadataBase: new URL(siteUrl),
-    title: "Legacy | Sarnia Wrestling Club",
-    description: "Archive of Sarnia Wrestling Club",
+    title: "Legacy | Sarnia Wrestling",
+    description: "Legacy Program of Sarnia Wrestling Club",
     openGraph: {
       title: "Legacy | Sarnia Wrestling Club",
       description: "Legacy Program of Sarnia Wrestling Club",
