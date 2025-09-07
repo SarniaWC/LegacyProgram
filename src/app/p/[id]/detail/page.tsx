@@ -1,5 +1,6 @@
 import { api } from "@/api";
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
 
 interface ArchiveImage {
   id: number;
@@ -7,9 +8,47 @@ interface ArchiveImage {
   short_name: string;
   Description: string;
 }
+
 async function getImages(id: string): Promise<ArchiveImage> {
   const response = await api.get(`upload/archive/image/${id}/detail/`);
   return response.data;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: number };
+}): Promise<Metadata> {
+  try {
+    const data = await getImages(params.id.toString());
+    return {
+      title: data.short_name || "Image Detail",
+      description: data.Description || "No description available",
+      openGraph: {
+        title: data.short_name || "Image Detail",
+        description: data.Description || "No description available",
+        images: [
+          {
+            url: data.cdn_url,
+            width: 1200,
+            height: 630,
+            alt: data.short_name || "Image",
+          },
+        ],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: data.short_name || "Image Detail",
+        description: data.Description || "No description available",
+        images: [data.cdn_url],
+      },
+    };
+  } catch (error) {
+    return {
+      title: "Image Detail",
+      description: "Image details not found",
+    };
+  }
 }
 
 export default async function DetailPage({
@@ -24,7 +63,6 @@ export default async function DetailPage({
     console.error("Error fetching image details:", error);
     notFound();
   }
-
   return (
     <div className="container mx-auto px-2 py-2">
       <div className="bg-neutral-900 rounded-lg shadow-lg overflow-hidden border border-neutral-700 max-w-3xl mx-auto">
