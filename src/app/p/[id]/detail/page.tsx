@@ -22,6 +22,10 @@ export async function generateMetadata({
   try {
     const { id } = await params;
     const data = await getImages(id);
+
+    // Encode the CDN URL to handle spaces and special characters
+    const encodedCdnUrl = encodeURI(data.cdn_url);
+
     return {
       title: data.short_name || "Image Detail",
       description: data.Description || "No description available",
@@ -30,7 +34,7 @@ export async function generateMetadata({
         description: data.Description || "No description available",
         images: [
           {
-            url: data.cdn_url,
+            url: encodedCdnUrl,
             width: 1200,
             height: 630,
             alt: data.short_name || "Image",
@@ -41,7 +45,7 @@ export async function generateMetadata({
         card: "summary_large_image",
         title: data.short_name || "Image Detail",
         description: data.Description || "No description available",
-        images: [data.cdn_url],
+        images: [encodedCdnUrl],
       },
     };
   } catch (error) {
