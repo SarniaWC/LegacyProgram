@@ -17,10 +17,11 @@ async function getImages(id: string): Promise<ArchiveImage> {
 export async function generateMetadata({
   params,
 }: {
-  params: { id: number };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   try {
-    const data = await getImages(params.id.toString());
+    const { id } = await params;
+    const data = await getImages(id);
     return {
       title: data.short_name || "Image Detail",
       description: data.Description || "No description available",
@@ -54,11 +55,12 @@ export async function generateMetadata({
 export default async function DetailPage({
   params,
 }: {
-  params: { id: number };
+  params: Promise<{ id: string }>;
 }) {
   let data;
   try {
-    data = await getImages(params.id.toString());
+    const { id } = await params;
+    data = await getImages(id);
   } catch (error) {
     console.error("Error fetching image details:", error);
     notFound();
