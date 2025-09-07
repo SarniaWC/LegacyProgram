@@ -3,20 +3,20 @@ import "./globals.css";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Archive | Sarnia Wrestling Club",
+  title: "Legacy | Sarnia Wrestling Club",
   description: "Archive of Sarnia Wrestling Club",
-  metadataBase: new URL("https://archive.sarniawrestling.com"),
+  metadataBase: new URL("https://legacy.sarniawrestling.ca"),
   openGraph: {
-    title: "Archive | Sarnia Wrestling Club",
-    description: "Archive of Sarnia Wrestling Club",
+    title: "Legacy | Sarnia Wrestling Club",
+    description: "Legacy Program of Sarnia Wrestling Club",
     type: "website",
-    url: "https://archive.sarniawrestling.com",
+    url: "https://legacy.sarniawrestling.ca",
     images: ["/og-image.jpg"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Archive | Sarnia Wrestling Club",
-    description: "Archive of Sarnia Wrestling Club",
+    title: "Legacy | Sarnia Wrestling Club",
+    description: "Legacy of Sarnia Wrestling Club",
     images: ["/og-image.jpg"],
   },
 };
