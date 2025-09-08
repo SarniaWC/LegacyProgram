@@ -62,7 +62,11 @@ export function ClientPicPage({ id }: ClientPicPageProps) {
   return (
     <div className="relative w-screen h-screen bg-black text-white overflow-hidden">
       {/* Header */}
-      <div className="absolute top-0 left-0 w-full flex justify-between items-center p-4 z-10 bg-gradient-to-b from-black/80 to-transparent">
+      <div
+        className="absolute top-0 left-0 w-full
+      flex justify-between items-center p-4 z-10 bg-gradient-to-b
+      from-black/80 to-transparent"
+      >
         <div className="flex space-x-2">
           <SVGButton
             iconType="Close"
@@ -88,7 +92,8 @@ export function ClientPicPage({ id }: ClientPicPageProps) {
               const url = URL.createObjectURL(response.data);
               const link = document.createElement("a");
               link.href = url;
-              link.download = "image.jpg";
+              link.download =
+                allImages[currentIndex].cdn_url.split("/").pop() || "image.jpg";
               document.body.appendChild(link);
               link.click();
               document.body.removeChild(link);
