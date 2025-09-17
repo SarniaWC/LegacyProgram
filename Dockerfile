@@ -2,6 +2,8 @@
 FROM node:24-alpine AS builder
 
 WORKDIR /app
+# Install glibc compatibility (required by several prebuilt binaries)
+RUN apk add --no-cache libc6-compat
 
 # Declare build-time variables
 ARG NEXT_PUBLIC_API_URL
@@ -14,7 +16,7 @@ ENV NEXT_PUBLIC_MAIN_SITE=$NEXT_PUBLIC_MAIN_SITE
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 
 # Install dependencies
-COPY package*.json pnpm-lock.yaml ./
+COPY ["package.json", "pnpm-lock.yaml", "./"]
 RUN npm install -g pnpm && pnpm install --frozen-lockfile
 
 # Copy source files and build
