@@ -14,13 +14,13 @@ ENV NEXT_PUBLIC_MAIN_SITE=$NEXT_PUBLIC_MAIN_SITE
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 
 # Install dependencies
-COPY package*.json ./
-RUN npm install --frozen-lockfile
+COPY package*.json pnpm-lock.yaml ./
+RUN npm install -g pnpm && pnpm install --frozen-lockfile
 
 # Copy source files and build
 COPY . .
-RUN npm run build
+RUN pnpm run build
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD ["pnpm", "start"]
