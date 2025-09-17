@@ -21,7 +21,7 @@ RUN npm install -g pnpm && pnpm install --frozen-lockfile
 
 # Copy source files and build
 COPY . .
-RUN pnpm run build
+RUN next build
 
 EXPOSE 3000
 
