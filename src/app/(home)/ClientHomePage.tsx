@@ -21,12 +21,12 @@ type FolderOption = {
 
 async function getImages(
   page: number,
-  folder?: string,
+  folder?: string
 ): Promise<ImageResult[]> {
   const folderParam = folder ? `&folder=${folder}` : "";
   try {
     const { data } = await api.get(
-      `/upload/archive/images/?page=${page}${folderParam}`,
+      `/upload/archive/images/?page=${page}${folderParam}`
     );
     return data.results as ImageResult[];
   } catch (err) {
@@ -45,7 +45,7 @@ async function getOptions(): Promise<FolderOption[]> {
 
 export default function ClientHomePage() {
   const [selectedFolder, setSelectedFolder] = useState<FolderOption | null>(
-    null,
+    null
   );
   const { data: folderOptions } = useQuery({
     queryKey: ["options"],
@@ -134,7 +134,7 @@ export default function ClientHomePage() {
           });
         }
       },
-      { rootMargin: "200px" },
+      { rootMargin: "200px" }
     );
     const node = loadMoreRef.current;
     if (node) observer.observe(node);
@@ -159,7 +159,7 @@ export default function ClientHomePage() {
           unstyled
           classNames={{
             control: () =>
-              "bg-neutral-900 text-white border border-neutral-700 rounded-md",
+              "bg-neutral-900 text-white border border-neutral-700 rounded-md p-2.5",
             menu: () => "bg-neutral-900 border border-neutral-700 mt-1",
             option: ({ isFocused }) =>
               isFocused
@@ -172,6 +172,7 @@ export default function ClientHomePage() {
           isClearable
           getOptionLabel={(option) => option.name}
           getOptionValue={(option) => option.id}
+          placeholder="Press to Filter by Year or Group"
         />
       </div>
 
