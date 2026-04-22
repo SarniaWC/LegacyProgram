@@ -50,13 +50,13 @@ export default function StandardLayout({ children }: LayoutProps) {
             <div className="flex flex-col sm:flex-row">
               <ul className="flex gap-4">
                 <li className="hover:text-primary">
-                  <Link href="/">Home</Link>
-                </li>
-                <li className="hover:text-primary">
                   <a href={`${main_site}/about`}>About</a>
                 </li>
                 <li className="hover:text-primary">
                   <a href={`${main_site}/contact`}>Contact</a>
+                </li>
+                <li className="hover:text-primary">
+                  <a href={`${main_site}/nomination`}>Nomination</a>
                 </li>
               </ul>
             </div>
