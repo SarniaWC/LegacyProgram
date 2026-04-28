@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { ClientPicPage } from "@/app/p/[id]/ClientPicPage";
 
+export const dynamic = "force-dynamic";
+
 interface ArchiveImage {
   id: number;
   cdn_url: string;

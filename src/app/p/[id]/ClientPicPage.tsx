@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { api } from "@/api";
@@ -29,6 +29,9 @@ interface ClientPicPageProps {
 
 export function ClientPicPage({ id }: ClientPicPageProps) {
   const navigate = useRouter();
+  const searchParams = useSearchParams();
+  const play = searchParams.get("play");
+
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [displayImage, setDisplayImage] = useState<string | null>(null);
 
@@ -40,6 +43,7 @@ export function ClientPicPage({ id }: ClientPicPageProps) {
 
   const allImages = isSuccess ? data.related_images : [];
 
+  // Set initial image index
   useEffect(() => {
     if (id && allImages.length > 0) {
       const index = allImages.findIndex((img) => img.id.toString() === id);
@@ -50,14 +54,31 @@ export function ClientPicPage({ id }: ClientPicPageProps) {
     }
   }, [id, allImages]);
 
+  // Navigation helper that preserves ?play=true
   function goToImage(index: number) {
     if (index >= 0 && index < allImages.length) {
       const image = allImages[index];
       setCurrentIndex(index);
       setDisplayImage(image.cdn_url);
-      navigate.push(`/p/${image.id}`);
+
+      const playParam = play === "true" ? "?play=true" : "";
+      navigate.push(`/p/${image.id}${playParam}`);
     }
   }
+
+  // Autoplay logic
+  useEffect(() => {
+    if (play !== "true") return;
+    if (allImages.length === 0) return;
+
+    const timer = setInterval(() => {
+      const nextIndex =
+        currentIndex + 1 < allImages.length ? currentIndex + 1 : 0;
+      goToImage(nextIndex);
+    }, 10000);
+
+    return () => clearInterval(timer);
+  }, [play, currentIndex, allImages]);
 
   return (
     <div className="relative w-screen h-screen bg-black text-white overflow-hidden">
@@ -75,11 +96,30 @@ export function ClientPicPage({ id }: ClientPicPageProps) {
           />
           <SVGButton
             iconType="Subject"
-            onClick={() => navigate.push(`/p/${id}/detail`)}
+            onClick={() => {
+              const playParam = play === "true" ? "?play=true" : "";
+              navigate.push(`/p/${id}/detail${playParam}`);
+            }}
             title="Details"
           />
         </div>
+
         <div className="flex space-x-2">
+          {/* Play / Pause Toggle */}
+          {play === "true" ? (
+            <SVGButton
+              iconType="Pause"
+              onClick={() => navigate.push(`/p/${id}`)}
+              title="Pause Slideshow"
+            />
+          ) : (
+            <SVGButton
+              iconType="Play"
+              onClick={() => navigate.push(`/p/${id}?play=true`)}
+              title="Play Slideshow"
+            />
+          )}
+
           <SVGButton
             iconType="Download"
             onClick={async () => {
@@ -101,6 +141,7 @@ export function ClientPicPage({ id }: ClientPicPageProps) {
             }}
             title="Download"
           />
+
           <SVGButton
             iconType="OpenNew"
             onClick={() => displayImage && window.open(displayImage, "_blank")}
@@ -118,6 +159,7 @@ export function ClientPicPage({ id }: ClientPicPageProps) {
           disabled={currentIndex <= 0}
           title="Previous"
         />
+
         {displayImage ? (
           <img
             src={displayImage}
@@ -127,6 +169,7 @@ export function ClientPicPage({ id }: ClientPicPageProps) {
         ) : (
           <p>Loading image...</p>
         )}
+
         <SVGButton
           iconType="ArrowForward"
           onClick={() => goToImage(currentIndex + 1)}
