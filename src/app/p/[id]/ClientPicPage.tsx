@@ -75,7 +75,7 @@ export function ClientPicPage({ id }: ClientPicPageProps) {
       const nextIndex =
         currentIndex + 1 < allImages.length ? currentIndex + 1 : 0;
       goToImage(nextIndex);
-    }, 10000);
+    }, 5000);
 
     return () => clearInterval(timer);
   }, [play, currentIndex, allImages]);
